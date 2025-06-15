@@ -1,0 +1,12 @@
+<h2>Add Asset</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <p>{{ form.name.label }}<br>{{ form.name }}</p>
+    <p>{{ form.category.label }}<br>{{ form.category }}</p>
+    <p>{{ form.serial_number.label }}<br>{{ form.serial_number }}</p>
+    <p>{{ form.assigned_to.label }}<br>{{ form.assigned_to }}</p>
+    <p>{{ form.purchase_date.label }}<br>{{ form.purchase_date }}</p>
+    <p>{{ form.status.label }}<br>{{ form.status }}</p>
+    <p>{{ form.submit }}</p>
+</form>
+<a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
