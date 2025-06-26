@@ -37,7 +37,7 @@ cd asset-manager
 ```
 
 ### 2. Set up a virtual environment
-For Mac
+For Mac:
 ```bash
 python -m venv venv
 source venv/bin/activate

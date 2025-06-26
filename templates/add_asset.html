@@ -1,17 +1,43 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>Add Asset</h2>
+<h2>{{ 'Edit Asset' if form.name.data else 'Add Asset' }}</h2>
+
 <form method="POST">
     {{ form.hidden_tag() }}
-    <p>{{ form.name.label }}<br>{{ form.name }}</p>
-    <p>{{ form.category.label }}<br>{{ form.category }}</p>
-    <p>{{ form.serial_number.label }}<br>{{ form.serial_number }}</p>
-    <p>{{ form.assigned_to.label }}<br>{{ form.assigned_to }}</p>
-    <p>{{ form.purchase_date.label }}<br>{{ form.purchase_date }}</p>
-    <p>{{ form.status.label }}<br>{{ form.status }}</p>
-    <p>{{ form.submit }}</p>
+
+    <div class="mb-3">
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.category.label(class="form-label") }}
+        {{ form.category(class="form-select") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.serial_number.label(class="form-label") }}
+        {{ form.serial_number(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.assigned_to.label(class="form-label") }}
+        {{ form.assigned_to(class="form-select") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.purchase_date.label(class="form-label") }}
+        {{ form.purchase_date(class="form-control") }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.status.label(class="form-label") }}
+        {{ form.status(class="form-select") }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary ms-2">Back to Dashboard</a>
 </form>
-<a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
 
 {% endblock %}

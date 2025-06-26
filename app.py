@@ -135,7 +135,7 @@ def add_asset():
             name=form.name.data,
             category=form.category.data,
             serial_number=form.serial_number.data,
-            assigned_to=form.assigned_to.data,
+            assigned_to_id=form.assigned_to.data,
             purchase_date=form.purchase_date.data,
             status=form.status.data
         )
@@ -146,6 +146,40 @@ def add_asset():
 
     return render_template('add_asset.html', form=form)
 
+# @app.route('/assets/edit/<int:asset_id>', methods=['GET', 'POST'])
+# def edit_asset(asset_id):
+#     if 'username' not in session:
+#         return redirect(url_for('login'))
+
+#     asset = Asset.query.get_or_404(asset_id)
+
+#     if session['role'] != 'admin' and (
+#         not asset.assigned_user or asset.assigned_user.username != session['username']
+#     ):
+#         flash("You can only edit assets assigned to you.", "danger")
+#         return redirect(url_for('dashboard'))
+
+#     form = AssetForm(obj=asset)
+#     form.assigned_to.choices = [(user.id, user.username) for user in User.query.all()]
+#     form.assigned_to.data = asset.assigned_to_id
+
+
+#     if asset.assigned_to_id:
+#         form.assigned_to.data = asset.assigned_to_id
+
+#     if form.validate_on_submit():
+#         asset.name = form.name.data
+#         asset.category = form.category.data
+#         asset.serial_number = form.serial_number.data
+#         asset.assigned_to_id = form.assigned_to.data
+#         asset.purchase_date = form.purchase_date.data
+#         asset.status = form.status.data
+
+#         db.session.commit()
+#         flash('Asset updated!', 'success')
+#         return redirect(url_for('dashboard'))
+
+#     return render_template('add_asset.html', form=form)
 @app.route('/assets/edit/<int:asset_id>', methods=['GET', 'POST'])
 def edit_asset(asset_id):
     if 'username' not in session:
@@ -160,16 +194,23 @@ def edit_asset(asset_id):
         return redirect(url_for('dashboard'))
 
     form = AssetForm(obj=asset)
+    form.assigned_to.choices = [(user.id, user.username) for user in User.query.all()]
+    form.assigned_to.data = asset.assigned_to_id
 
     if form.validate_on_submit():
-        form.populate_obj(asset)
+        asset.name = form.name.data
+        asset.category = form.category.data
+        asset.serial_number = form.serial_number.data
+        asset.assigned_to_id = form.assigned_to.data
+        asset.purchase_date = form.purchase_date.data
+        asset.status = form.status.data
+
         db.session.commit()
         flash('Asset updated!', 'success')
         return redirect(url_for('dashboard'))
-    elif form.errors:
-        print("Form errors:", form.errors)
 
     return render_template('add_asset.html', form=form)
+
 
 
 @app.route('/assets/delete/<int:asset_id>')
