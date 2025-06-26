@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from forms import RegisterForm, LoginForm, AssetForm
@@ -6,12 +7,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret123'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secret123')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///site.db')
+
 db.init_app(app)
 
-
-### zoha: dummy data seed
 def seed_users():
     if User.query.first():
         return
