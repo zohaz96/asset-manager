@@ -12,23 +12,19 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
 
-from wtforms import SelectField, DateField
-
 class AssetForm(FlaskForm):
     name = StringField('Asset Name', validators=[DataRequired()])
     category = SelectField('Category', choices=[
         ('Laptop', 'Laptop'),
         ('Monitor', 'Monitor'),
         ('Phone', 'Phone'),
+        ('Tablet', 'Tablet'),
+        ('Peripheral', 'Peripheral'),
         ('Other', 'Other')
     ], validators=[DataRequired()])
     serial_number = StringField('Serial Number', validators=[DataRequired()])
-    assigned_to = StringField('Assigned To (optional)')
-    purchase_date = DateField(
-        'Purchase Date',
-        format='%Y-%m-%d',
-        render_kw={"type": "date"} 
-    )
+    assigned_to = SelectField('Assign To', coerce=int, validators=[DataRequired()])
+    purchase_date = DateField('Purchase Date', format='%Y-%m-%d')
     status = SelectField('Status', choices=[
         ('Available', 'Available'),
         ('In Use', 'In Use'),
@@ -36,4 +32,3 @@ class AssetForm(FlaskForm):
         ('Retired', 'Retired')
     ], validators=[DataRequired()])
     submit = SubmitField('Submit')
-

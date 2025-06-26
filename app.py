@@ -128,8 +128,10 @@ def logout():
 def add_asset():
     if 'username' not in session:
         return redirect(url_for('login'))
-    
+
     form = AssetForm()
+    form.assigned_to.choices = [(user.id, user.username) for user in User.query.all()]
+
     if form.validate_on_submit():
         asset = Asset(
             name=form.name.data,
@@ -146,40 +148,6 @@ def add_asset():
 
     return render_template('add_asset.html', form=form)
 
-# @app.route('/assets/edit/<int:asset_id>', methods=['GET', 'POST'])
-# def edit_asset(asset_id):
-#     if 'username' not in session:
-#         return redirect(url_for('login'))
-
-#     asset = Asset.query.get_or_404(asset_id)
-
-#     if session['role'] != 'admin' and (
-#         not asset.assigned_user or asset.assigned_user.username != session['username']
-#     ):
-#         flash("You can only edit assets assigned to you.", "danger")
-#         return redirect(url_for('dashboard'))
-
-#     form = AssetForm(obj=asset)
-#     form.assigned_to.choices = [(user.id, user.username) for user in User.query.all()]
-#     form.assigned_to.data = asset.assigned_to_id
-
-
-#     if asset.assigned_to_id:
-#         form.assigned_to.data = asset.assigned_to_id
-
-#     if form.validate_on_submit():
-#         asset.name = form.name.data
-#         asset.category = form.category.data
-#         asset.serial_number = form.serial_number.data
-#         asset.assigned_to_id = form.assigned_to.data
-#         asset.purchase_date = form.purchase_date.data
-#         asset.status = form.status.data
-
-#         db.session.commit()
-#         flash('Asset updated!', 'success')
-#         return redirect(url_for('dashboard'))
-
-#     return render_template('add_asset.html', form=form)
 @app.route('/assets/edit/<int:asset_id>', methods=['GET', 'POST'])
 def edit_asset(asset_id):
     if 'username' not in session:
@@ -195,7 +163,6 @@ def edit_asset(asset_id):
 
     form = AssetForm(obj=asset)
     form.assigned_to.choices = [(user.id, user.username) for user in User.query.all()]
-    form.assigned_to.data = asset.assigned_to_id
 
     if form.validate_on_submit():
         asset.name = form.name.data
@@ -206,12 +173,13 @@ def edit_asset(asset_id):
         asset.status = form.status.data
 
         db.session.commit()
-        flash('Asset updated!', 'success')
+        flash('Asset updated successfully!', 'success')
         return redirect(url_for('dashboard'))
+    else:
+        # Only pre-fill this on GET, NOT after submission
+        form.assigned_to.data = asset.assigned_to_id
 
     return render_template('add_asset.html', form=form)
-
-
 
 @app.route('/assets/delete/<int:asset_id>')
 def delete_asset(asset_id):
