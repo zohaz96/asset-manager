@@ -1,31 +1,18 @@
-# My Flask App
+# SEA - Asset Management App
 
-## How to Run
+## User Manual
 
-1. Create a virtual environment (optional but recommended):
+### Admin Users
+- Can view, create, edit, and delete all asset records
+- Access dashboard with full control panel
+- Default admin user (for testing):
+  - **Username:** admin
+  - **Password:** admin123
 
-python3 -m venv venv
-source venv/bin/activate # On Windows use venv\Scripts\activate
-
-
-2. Install Flask:
-
-pip install -r requirements.txt
-
-3. Run the app:
-
-python app.py
+### Regular Users
+- Can view all assets
+- Can create and edit assets
+- Cannot delete assets
 
 
-4. Open your browser and go to `http://127.0.0.1:5000/`
-
-## Description
-
-normal user:
-username: user
-password: password
-
-admin user:
-username: admin
-password: admin123
 
