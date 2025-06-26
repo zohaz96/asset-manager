@@ -153,7 +153,9 @@ def edit_asset(asset_id):
 
     asset = Asset.query.get_or_404(asset_id)
 
-    if session['role'] != 'admin' and asset.assigned_to != session['username']:
+    if session['role'] != 'admin' and (
+        not asset.assigned_user or asset.assigned_user.username != session['username']
+    ):
         flash("You can only edit assets assigned to you.", "danger")
         return redirect(url_for('dashboard'))
 
