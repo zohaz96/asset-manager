@@ -12,47 +12,73 @@ db.init_app(app)
 
 
 ### zoha: dummy data seed
+def seed_users():
+    if User.query.first():
+        return
+    
+
+    users = [
+        User(username='admin', password=generate_password_hash('admin123'), role='admin'),
+        User(username='michael', password=generate_password_hash('worldsbest'), role='regular'),
+        User(username='dwight', password=generate_password_hash('beets123'), role='regular'),
+        User(username='jim', password=generate_password_hash('halpert7'), role='regular'),
+        User(username='pam', password=generate_password_hash('artpass1'), role='regular'),
+        User(username='angela', password=generate_password_hash('ilovemycat'), role='regular'),
+        User(username='kevin', password=generate_password_hash('chilli77'), role='regular'),
+        User(username='stanley', password=generate_password_hash('crossword'), role='regular'),
+        User(username='kelly', password=generate_password_hash('ryanryan'), role='regular'),
+        User(username='creed', password=generate_password_hash('mungbeans'), role='regular'),
+        User(username='ryan', password=generate_password_hash('ryan123'), role='regular'),
+    ]
+
+    db.session.bulk_save_objects(users)
+    db.session.commit()
+    print("Users created")
 
 def seed_dummy_assets():
     if Asset.query.first():
-        return  # Don't insert if data already exists
+        return
 
     from datetime import date
+    
+    user_michael = User.query.filter_by(username='michael').first()
+    user_dwight = User.query.filter_by(username='dwight').first()
+    user_jim = User.query.filter_by(username='jim').first()
+    user_pam = User.query.filter_by(username='pam').first()
+    user_angela = User.query.filter_by(username='angela').first()
+    user_kevin = User.query.filter_by(username='kevin').first()
+    user_stanley = User.query.filter_by(username='stanley').first()
+    user_kelly = User.query.filter_by(username='kelly').first()
+    user_creed = User.query.filter_by(username='creed').first()
+    user_admin = User.query.filter_by(username='admin').first()
 
     dummy_assets = [
-        Asset(name='Laptop A', category='Laptop', serial_number='SN1001', assigned_to='Alice', purchase_date=date(2022, 5, 10), status='In Use'),
-        Asset(name='Monitor B', category='Monitor', serial_number='SN1002', assigned_to='Bob', purchase_date=date(2021, 3, 22), status='Available'),
-        Asset(name='Phone X', category='Phone', serial_number='SN1003', assigned_to='Charlie', purchase_date=date(2023, 1, 14), status='In Use'),
-        Asset(name='Laptop Z', category='Laptop', serial_number='SN1004', assigned_to='', purchase_date=date(2020, 11, 2), status='Retired'),
-        Asset(name='Monitor Y', category='Monitor', serial_number='SN1005', assigned_to='Diana', purchase_date=date(2021, 7, 19), status='Faulty'),
+        Asset(name='Laptop A', category='Laptop', serial_number='SN2001', assigned_to_id=user_michael.id, purchase_date=date(2022, 5, 10), status='In Use'),
+        Asset(name='Monitor A', category='Monitor', serial_number='SN2002', assigned_to_id=user_dwight.id, purchase_date=date(2021, 3, 22), status='Available'),
+        Asset(name='Phone A', category='Phone', serial_number='SN2003', assigned_to_id=user_jim.id, purchase_date=date(2023, 1, 14), status='In Use'),
+        Asset(name='Tablet A', category='Tablet', serial_number='SN2004', assigned_to_id=user_pam.id, purchase_date=date(2020, 11, 2), status='Retired'),
+        Asset(name='Monitor B', category='Monitor', serial_number='SN2005', assigned_to_id=user_angela.id, purchase_date=date(2021, 7, 19), status='Faulty'),
+        Asset(name='Laptop B', category='Laptop', serial_number='SN2006', assigned_to_id=user_kevin.id, purchase_date=date(2022, 2, 5), status='In Use'),
+        Asset(name='Docking Station A', category='Peripheral', serial_number='SN2007', assigned_to_id=user_stanley.id, purchase_date=date(2023, 4, 1), status='Available'),
+        Asset(name='Mouse A', category='Peripheral', serial_number='SN2008', assigned_to_id=user_kelly.id, purchase_date=date(2022, 9, 9), status='In Use'),
+        Asset(name='Keyboard A', category='Peripheral', serial_number='SN2009', assigned_to_id=user_creed.id, purchase_date=date(2021, 12, 30), status='In Use'),
+        Asset(name='Headset A', category='Peripheral', serial_number='SN2010', assigned_to_id=user_jim.id, purchase_date=date(2023, 6, 15), status='Available'),
+        Asset(name='Monitor C', category='Monitor', serial_number='SN2011', assigned_to_id=user_kevin.id, purchase_date=date(2022, 3, 17), status='In Use'),
+        Asset(name='Laptop C', category='Laptop', serial_number='SN2012', assigned_to_id=user_admin.id, purchase_date=date(2023, 8, 20), status='Available'),
+        Asset(name='Tablet B', category='Tablet', serial_number='SN2013', assigned_to_id=user_pam.id, purchase_date=date(2021, 5, 11), status='In Use'),
+        Asset(name='Docking Station B', category='Peripheral', serial_number='SN2014', assigned_to_id=user_angela.id, purchase_date=date(2020, 10, 1), status='Retired'),
+        Asset(name='Laptop D', category='Laptop', serial_number='SN2015', assigned_to_id=user_michael.id, purchase_date=date(2022, 11, 8), status='In Use'),
     ]
 
     db.session.bulk_save_objects(dummy_assets)
     db.session.commit()
-    print("✅ Dummy assets seeded.")
-
-def seed_admin_user():
-    if User.query.filter_by(username='admin').first():
-        return  # Admin already exists
-
-    admin = User(
-        username='admin',
-        password=generate_password_hash('admin123'),
-        role='admin'
-    )
-    db.session.add(admin)
-    db.session.commit()
-    print("✅ Admin user created (username: admin, password: admin123)")
+    print("assets seeded")
 
 with app.app_context():
     db.create_all()
+    seed_users()
     seed_dummy_assets()
-    seed_admin_user()
-
-#zoha: this didnt work originally. idk why.
-# @app.before_first_request
-# def create_tables():
-#     db.create_all()
+    
 
 @app.route('/')
 def home():
@@ -126,6 +152,11 @@ def edit_asset(asset_id):
         return redirect(url_for('login'))
 
     asset = Asset.query.get_or_404(asset_id)
+
+    if session['role'] != 'admin' and asset.assigned_to != session['username']:
+        flash("You can only edit assets assigned to you.", "danger")
+        return redirect(url_for('dashboard'))
+
     form = AssetForm(obj=asset)
 
     if form.validate_on_submit():
