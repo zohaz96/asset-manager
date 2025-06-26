@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+
 <h2>Add Asset</h2>
 <form method="POST">
     {{ form.hidden_tag() }}
@@ -10,3 +13,5 @@
     <p>{{ form.submit }}</p>
 </form>
 <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+
+{% endblock %}

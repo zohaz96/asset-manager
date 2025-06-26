@@ -1,11 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Home</title>
 </head>
 <body>
-    <h1>Welcome to my Asset Management App 👾</h1>
+    <h1>Asset Management App 👾</h1>
     <a href="{{ url_for('register') }}">Register</a> |
     <a href="{{ url_for('login') }}">Login</a>
 </body>
 </html>
+
+{% endblock %}
