@@ -37,12 +37,12 @@ cd asset-manager
 ```
 
 ### 2. Set up a virtual environment
-for Mac
+<!-- for Mac -->
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
-for Windows
+<!-- for Windows -->
 ```bash
 python -m venv venv
 source venv\Scripts\activate
