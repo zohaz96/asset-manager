@@ -61,6 +61,18 @@ python app.py
 Open your browser and visit:  
 [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
+## Testing
+
+Unit tests were written using [`pytest`](https://docs.pytest.org/)
+
+### Running the Tests
+
+To run all tests locally:
+
+```bash
+pytest -v
+```
+
 ## License
 
 This project is licensed under the MIT License
