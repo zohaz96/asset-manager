@@ -7,16 +7,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
 app = Flask(__name__)
-
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secret123')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///site.db')
-
 db.init_app(app)
 
 def seed_users():
     if User.query.first():
         return
-    
 
     users = [
         User(username='admin', password=generate_password_hash('admin123'), role='admin'),
@@ -80,7 +77,6 @@ with app.app_context():
     seed_users()
     seed_dummy_assets()
     
-
 @app.route('/')
 def home():
     return render_template("index.html")
@@ -192,7 +188,6 @@ def delete_asset(asset_id):
     db.session.commit()
     flash('Asset deleted.', 'info')
     return redirect(url_for('dashboard'))
-
 
 if __name__ == "__main__":
     app.run()
